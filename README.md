@@ -22,12 +22,22 @@ python3 -m http.server 8000
 
 ```
 .
-├── index.html          # Estrutura da página (painéis, tabelas, Gantt)
+├── index.html                 # Simulador — painéis, tabelas, Gantt
+├── docs/                       # Páginas independentes, uma por algoritmo
+│   ├── fcfs.html
+│   ├── sjf.html
+│   ├── srtf.html
+│   ├── round-robin.html
+│   ├── priority-np.html
+│   └── priority-p.html
 ├── css/
-│   └── style.css        # Todo o visual: tema claro/escuro, layout, componentes
+│   ├── style.css                # Visual do simulador: tema claro/escuro, componentes
+│   ├── layout.css                # Shell de duas colunas (sidebar + conteúdo), usado por todas as páginas
+│   └── docs.css                   # Tipografia e componentes das páginas de explicação
 ├── js/
-│   ├── engine.js         # Algoritmos de escalonamento — lógica pura, sem DOM
-│   └── app.js             # Estado da aplicação, renderização e controles
+│   ├── engine.js                  # Algoritmos de escalonamento — lógica pura, sem DOM
+│   ├── sidebar.js                  # Navegação lateral compartilhada por index.html e docs/*.html
+│   └── app.js                       # Estado do simulador, renderização e controles
 └── README.md
 ```
 
@@ -39,11 +49,24 @@ devolve um objeto `{ segments, stats }`:
 - `stats`: por processo — horário de chegada, duração, início e término
 
 Isso permite reaproveitar ou testar os algoritmos isoladamente (ex.: em
-testes automatizados ou em outra interface) sem tocar em `app.js`.
+testes automatizados ou em outra interface) sem tocar em `app.js`. O array
+`ALGOS` em `engine.js` também é a fonte única de verdade para nome, descrição
+e `slug` de cada algoritmo — tanto o seletor do simulador quanto a barra
+lateral (`sidebar.js`) leem dali, então adicionar um algoritmo novo não exige
+editar a navegação à mão.
 
 **`app.js`** guarda o estado (lista de processos, algoritmo selecionado,
 quantum, posição da linha do tempo) e é responsável por toda a renderização
-e pelos controles de reprodução (play/pause/passo/reset/velocidade).
+e pelos controles de reprodução (play/pause/passo/reset/velocidade). Ele
+também lê um parâmetro `?algo=<id>` na URL para pré-selecionar o algoritmo —
+é assim que os botões "Testar no simulador" das páginas de `docs/` abrem o
+simulador já no algoritmo certo.
+
+**`sidebar.js`** renderiza a navegação lateral (link para o simulador + um
+link por algoritmo) tanto em `index.html` quanto em cada página de `docs/`,
+destacando o item ativo. Como cada página HTML em `docs/` é independente
+(pode ser aberta e compartilhada sozinha), a sidebar é montada via
+JavaScript em vez de duplicar HTML manualmente em seis arquivos.
 
 ## Algoritmos implementados
 
@@ -85,3 +108,8 @@ Para adicionar um novo algoritmo:
 
 Nenhuma mudança em `app.js` é necessária além disso — a UI lê `ALGOS`
 dinamicamente.
+
+Para adicionar a página de explicação correspondente, copie um dos arquivos
+em `docs/` como modelo, ajuste o conteúdo e o `current` passado a
+`initSidebar(...)` para o novo `slug` — a sidebar já vai linkar para ela
+automaticamente a partir do `ALGOS` atualizado.

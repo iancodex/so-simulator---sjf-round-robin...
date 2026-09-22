@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prioridade — Escalonador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/docs.css">
+</head>
+<body>
+<div class="app-shell">
+  <nav class="sidebar" id="sidebarMount"></nav>
+  <main class="docs-main">
+    <div class="docs-eyebrow">algoritmo de escalonamento · não preemptivo</div>
+    <h1>Prioridade (não preemptivo)</h1>
+    <p class="docs-sub">Cada processo carrega um número de prioridade. O escalonador sempre roda o mais prioritário disponível — até ele terminar.</p>
+
+    <h2>Como funciona</h2>
+    <p>
+      Cada processo recebe uma prioridade (neste simulador, <strong>quanto
+      menor o número, maior a prioridade</strong> — convenção comum em
+      sistemas reais, onde a prioridade 0 costuma ser a mais alta). Entre os
+      processos já chegados, o escalonador sempre executa o de maior
+      prioridade até ele terminar, sem interromper.
+    </p>
+    <ol>
+      <li>Entre os processos já chegados e ainda não executados, encontre o de maior prioridade (menor número).</li>
+      <li>Execute-o do início ao fim.</li>
+      <li>Quando a CPU liberar, repita a escolha entre os que já chegaram até então.</li>
+    </ol>
+
+    <h2>Pseudocódigo</h2>
+    <div class="code-block">tempo = 0
+enquanto houver processo pendente:
+    disponiveis = processos com chegada <= tempo e ainda não executados
+    se disponiveis estiver vazio:
+        tempo = chegada do próximo processo pendente
+        continue
+    p = processo de maior prioridade (menor número) em disponiveis
+    inicio[p] = tempo
+    tempo = tempo + duracao[p]
+    fim[p]   = tempo</div>
+
+    <h2>Vantagens e desvantagens</h2>
+    <div class="pros-cons">
+      <div class="pc-card good">
+        <h3>vantagens</h3>
+        <ul>
+          <li>Reflete diretamente a importância relativa dos processos (ex.: processos do sistema vs. processos de usuário).</li>
+          <li>Flexível: a prioridade pode vir de qualquer critério — não precisa ser a duração.</li>
+        </ul>
+      </div>
+      <div class="pc-card bad">
+        <h3>desvantagens</h3>
+        <ul>
+          <li><strong>Inanição</strong>: processos de baixa prioridade podem nunca rodar se processos de alta prioridade continuarem chegando.</li>
+          <li>Na prática, costuma exigir <em>aging</em> — aumentar gradualmente a prioridade de quem espera demais — para evitar esse problema. Este simulador não implementa aging.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Fórmulas</h2>
+    <div class="formula">espera = (fim − chegada) − duração</div>
+    <div class="formula">retorno = fim − chegada</div>
+
+    <div class="docs-cta">
+      <a href="../index.html?algo=prio_np">Testar Prioridade no simulador →</a>
+    </div>
+  </main>
+</div>
+<script src="../js/engine.js"></script>
+<script src="../js/sidebar.js"></script>
+<script>initSidebar('sidebarMount', { fromDocs: true, current: 'priority-np' });</script>
+</body>
+</html>

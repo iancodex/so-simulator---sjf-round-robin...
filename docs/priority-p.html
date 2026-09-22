@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prioridade Preemptiva — Escalonador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/docs.css">
+</head>
+<body>
+<div class="app-shell">
+  <nav class="sidebar" id="sidebarMount"></nav>
+  <main class="docs-main">
+    <div class="docs-eyebrow">algoritmo de escalonamento · preemptivo</div>
+    <h1>Prioridade Preemptiva</h1>
+    <p class="docs-sub">Como a prioridade não preemptiva, mas um processo em execução é interrompido assim que chega alguém com prioridade mais alta.</p>
+
+    <h2>Como funciona</h2>
+    <p>
+      Igual à prioridade não preemptiva na escolha — sempre roda o processo
+      de maior prioridade (menor número) entre os disponíveis — mas
+      reavaliada continuamente. Se um processo com prioridade mais alta que
+      a do processo em execução chega, o processo atual é imediatamente
+      interrompido e volta para a fila; o recém-chegado assume a CPU.
+    </p>
+    <ol>
+      <li>A cada unidade de tempo, olhe todos os processos já chegados e ainda não concluídos.</li>
+      <li>Escolha o de maior prioridade (menor número).</li>
+      <li>Execute-o por uma unidade de tempo (ou até a próxima chegada).</li>
+      <li>Repita a escolha — o processo em execução pode continuar ou ser trocado por um recém-chegado mais prioritário.</li>
+    </ol>
+
+    <h2>Pseudocódigo</h2>
+    <div class="code-block">tempo = 0
+enquanto houver processo com tempo_restante > 0:
+    disponiveis = processos com chegada <= tempo e tempo_restante > 0
+    se disponiveis estiver vazio:
+        tempo = chegada do próximo processo pendente
+        continue
+    p = processo de maior prioridade (menor número) em disponiveis
+    executar p por 1 unidade de tempo
+    tempo_restante[p] -= 1
+    tempo += 1</div>
+
+    <h2>Vantagens e desvantagens</h2>
+    <div class="pros-cons">
+      <div class="pc-card good">
+        <h3>vantagens</h3>
+        <ul>
+          <li>Resposta quase imediata para processos críticos que acabaram de chegar.</li>
+          <li>Útil em sistemas com requisitos de tempo real ou tarefas urgentes.</li>
+        </ul>
+      </div>
+      <div class="pc-card bad">
+        <h3>desvantagens</h3>
+        <ul>
+          <li>Mais trocas de contexto que a versão não-preemptiva.</li>
+          <li>Inanição de processos de baixa prioridade é ainda mais provável sem <em>aging</em> — não implementado aqui.</li>
+          <li>Mais difícil de prever/analisar o comportamento do sistema.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Fórmulas</h2>
+    <div class="formula">espera = (fim − chegada) − duração</div>
+    <div class="formula">retorno = fim − chegada</div>
+
+    <div class="docs-cta">
+      <a href="../index.html?algo=prio_p">Testar Prioridade Preemptiva no simulador →</a>
+    </div>
+  </main>
+</div>
+<script src="../js/engine.js"></script>
+<script src="../js/sidebar.js"></script>
+<script>initSidebar('sidebarMount', { fromDocs: true, current: 'priority-p' });</script>
+</body>
+</html>

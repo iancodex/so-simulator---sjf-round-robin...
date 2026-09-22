@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FCFS — Escalonador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/docs.css">
+</head>
+<body>
+<div class="app-shell">
+  <nav class="sidebar" id="sidebarMount"></nav>
+  <main class="docs-main">
+    <div class="docs-eyebrow">algoritmo de escalonamento · não preemptivo</div>
+    <h1>FCFS — First-Come, First-Served</h1>
+    <p class="docs-sub">O mais simples de todos: quem chega primeiro, executa primeiro. Sem interrupções, sem prioridades — só ordem de chegada.</p>
+
+    <h2>Como funciona</h2>
+    <p>
+      Os processos entram em uma fila (FIFO) na ordem em que chegam à CPU.
+      O escalonador retira o processo da frente da fila, executa até ele
+      terminar por completo, e só então passa para o próximo. Não existe
+      preempção: uma vez que um processo começou a rodar, ele só sai da CPU
+      quando termina.
+    </p>
+    <ol>
+      <li>Ordene os processos por tempo de chegada.</li>
+      <li>Pegue o primeiro da fila que já chegou.</li>
+      <li>Execute-o do início ao fim, sem interrupções.</li>
+      <li>Repita com o próximo da fila até não sobrar nenhum.</li>
+    </ol>
+
+    <h2>Pseudocódigo</h2>
+    <div class="code-block">ordenar processos por tempo_chegada
+tempo = 0
+para cada processo p, nessa ordem:
+    tempo = max(tempo, chegada[p])
+    inicio[p] = tempo
+    tempo = tempo + duracao[p]
+    fim[p]   = tempo</div>
+
+    <h2>Vantagens e desvantagens</h2>
+    <div class="pros-cons">
+      <div class="pc-card good">
+        <h3>vantagens</h3>
+        <ul>
+          <li>Trivial de implementar e de entender.</li>
+          <li>Sem inanição: todo processo que chega eventualmente roda.</li>
+          <li>Nenhuma troca de contexto extra — mínimo overhead.</li>
+        </ul>
+      </div>
+      <div class="pc-card bad">
+        <h3>desvantagens</h3>
+        <ul>
+          <li><strong>Efeito comboio</strong>: um processo longo à frente da fila trava todos os curtos atrás dele.</li>
+          <li>Tempo médio de espera costuma ser bem pior que SJF ou Round-Robin.</li>
+          <li>Péssimo para sistemas interativos — o tempo de resposta pode ser alto.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Fórmulas</h2>
+    <p>Para cada processo, com <em>fim</em>, <em>chegada</em> e <em>duração</em> conhecidos:</p>
+    <div class="formula">espera = (fim − chegada) − duração</div>
+    <div class="formula">retorno = fim − chegada</div>
+
+    <div class="docs-cta">
+      <a href="../index.html?algo=fcfs">Testar FCFS no simulador →</a>
+    </div>
+  </main>
+</div>
+<script src="../js/engine.js"></script>
+<script src="../js/sidebar.js"></script>
+<script>initSidebar('sidebarMount', { fromDocs: true, current: 'fcfs' });</script>
+</body>
+</html>

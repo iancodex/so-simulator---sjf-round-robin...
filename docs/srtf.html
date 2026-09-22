@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SRTF — Escalonador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/docs.css">
+</head>
+<body>
+<div class="app-shell">
+  <nav class="sidebar" id="sidebarMount"></nav>
+  <main class="docs-main">
+    <div class="docs-eyebrow">algoritmo de escalonamento · preemptivo</div>
+    <h1>SRTF — Shortest Remaining Time First</h1>
+    <p class="docs-sub">A versão preemptiva do SJF: se um processo recém-chegado tem um tempo restante menor que o que está rodando, ele assume a CPU imediatamente.</p>
+
+    <h2>Como funciona</h2>
+    <p>
+      Igual ao SJF, mas reavaliado continuamente. Sempre que um processo
+      novo chega, o escalonador compara o <strong>tempo restante</strong> do
+      processo em execução com o tempo restante (= duração total, já que
+      acabou de chegar) do recém-chegado. Se o novo processo for mais curto,
+      o processo em execução é interrompido e volta para a fila — sem perder
+      o trabalho já feito, apenas pausando.
+    </p>
+    <ol>
+      <li>A cada unidade de tempo, olhe todos os processos já chegados e ainda não concluídos.</li>
+      <li>Escolha o que tem o menor tempo restante.</li>
+      <li>Execute-o por uma unidade de tempo (ou até a próxima chegada).</li>
+      <li>Repita a escolha — o processo em execução pode continuar ou ser trocado.</li>
+    </ol>
+
+    <h2>Pseudocódigo</h2>
+    <div class="code-block">tempo = 0
+enquanto houver processo com tempo_restante > 0:
+    disponiveis = processos com chegada <= tempo e tempo_restante > 0
+    se disponiveis estiver vazio:
+        tempo = chegada do próximo processo pendente
+        continue
+    p = processo de menor tempo_restante em disponiveis
+    executar p por 1 unidade de tempo
+    tempo_restante[p] -= 1
+    tempo += 1</div>
+
+    <h2>Vantagens e desvantagens</h2>
+    <div class="pros-cons">
+      <div class="pc-card good">
+        <h3>vantagens</h3>
+        <ul>
+          <li>Tempo médio de espera igual ou menor que o SJF não-preemptivo — é o algoritmo ótimo teórico para minimizar a espera média.</li>
+          <li>Reage imediatamente a processos curtos que chegam.</li>
+        </ul>
+      </div>
+      <div class="pc-card bad">
+        <h3>desvantagens</h3>
+        <ul>
+          <li>Mais trocas de contexto que o SJF — cada uma tem um custo real que este modelo simplificado ignora.</li>
+          <li>Mesma dependência de conhecer (ou estimar) a duração dos processos.</li>
+          <li>Inanição de processos longos ainda é possível, e pode ser pior que no SJF.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Fórmulas</h2>
+    <div class="formula">espera = (fim − chegada) − duração</div>
+    <div class="formula">retorno = fim − chegada</div>
+
+    <div class="docs-cta">
+      <a href="../index.html?algo=srtf">Testar SRTF no simulador →</a>
+    </div>
+  </main>
+</div>
+<script src="../js/engine.js"></script>
+<script src="../js/sidebar.js"></script>
+<script>initSidebar('sidebarMount', { fromDocs: true, current: 'srtf' });</script>
+</body>
+</html>

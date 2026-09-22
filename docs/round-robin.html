@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Round-Robin — Escalonador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/docs.css">
+</head>
+<body>
+<div class="app-shell">
+  <nav class="sidebar" id="sidebarMount"></nav>
+  <main class="docs-main">
+    <div class="docs-eyebrow">algoritmo de escalonamento · preemptivo</div>
+    <h1>Round-Robin</h1>
+    <p class="docs-sub">Cada processo ganha uma fatia de tempo fixa (o quantum); se não terminar, volta para o fim da fila. A base dos sistemas de tempo compartilhado.</p>
+
+    <h2>Como funciona</h2>
+    <p>
+      Os processos ficam em uma fila circular. O escalonador tira o
+      processo da frente da fila e o executa por, no máximo, um
+      <strong>quantum</strong> de tempo. Se o processo terminar antes disso,
+      ótimo — ele sai do sistema. Se não terminar, é interrompido e vai para
+      o fim da fila, dando lugar ao próximo. Processos que chegam durante
+      uma fatia entram na fila antes do processo que acabou de ser
+      interrompido.
+    </p>
+    <ol>
+      <li>Coloque os processos na fila conforme chegam.</li>
+      <li>Retire o processo da frente da fila.</li>
+      <li>Execute-o por até <code>quantum</code> unidades de tempo.</li>
+      <li>Se ele não terminou, devolva-o ao fim da fila (depois de enfileirar quem chegou nesse meio-tempo).</li>
+      <li>Repita até a fila esvaziar.</li>
+    </ol>
+
+    <h2>Pseudocódigo</h2>
+    <div class="code-block">fila = processos ordenados por chegada
+tempo = 0
+enquanto fila não estiver vazia:
+    p = fila.remover_primeiro()
+    fatia = min(quantum, tempo_restante[p])
+    executar p por `fatia` unidades
+    tempo += fatia
+    tempo_restante[p] -= fatia
+    enfileirar todo processo que chegou até `tempo`
+    se tempo_restante[p] > 0:
+        fila.adicionar_no_fim(p)</div>
+
+    <h2>Vantagens e desvantagens</h2>
+    <div class="pros-cons">
+      <div class="pc-card good">
+        <h3>vantagens</h3>
+        <ul>
+          <li><strong>Justo</strong>: nenhum processo espera indefinidamente — todos avançam em ciclos regulares.</li>
+          <li>Bom tempo de resposta, ideal para sistemas interativos e de tempo compartilhado.</li>
+          <li>Não precisa conhecer a duração dos processos de antemão.</li>
+        </ul>
+      </div>
+      <div class="pc-card bad">
+        <h3>desvantagens</h3>
+        <ul>
+          <li>Desempenho muito sensível ao <strong>tamanho do quantum</strong>.</li>
+          <li>Quantum pequeno demais → excesso de trocas de contexto (overhead).</li>
+          <li>Quantum grande demais → o comportamento se aproxima do FCFS.</li>
+          <li>Tempo médio de retorno costuma ser pior que SJF/SRTF.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Escolhendo o quantum</h2>
+    <p>
+      Uma regra prática comum: escolha um quantum tal que a maior parte dos
+      processos (regra de bolso: cerca de 80%) consiga terminar em uma única
+      fatia. Isso equilibra justiça (fatias curtas) com baixo overhead
+      (poucas trocas de contexto).
+    </p>
+
+    <h2>Fórmulas</h2>
+    <div class="formula">espera = (fim − chegada) − duração</div>
+    <div class="formula">retorno = fim − chegada</div>
+
+    <div class="docs-cta">
+      <a href="../index.html?algo=rr">Testar Round-Robin no simulador →</a>
+    </div>
+  </main>
+</div>
+<script src="../js/engine.js"></script>
+<script src="../js/sidebar.js"></script>
+<script>initSidebar('sidebarMount', { fromDocs: true, current: 'round-robin' });</script>
+</body>
+</html>

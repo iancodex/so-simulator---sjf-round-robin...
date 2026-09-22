@@ -15,18 +15,21 @@
 
   const COLORS = ['#33618C', '#E0972E', '#5F8F6E', '#8A5FA8', '#B7503F', '#3E8E8E', '#A34A7C', '#7C8C3E'];
 
+  // `slug` is the shared key used to build doc-page filenames (docs/<slug>.html)
+  // and to highlight the active sidebar link — one source of truth for both
+  // the simulator UI and the standalone explanation pages.
   const ALGOS = [
-    { id: 'fcfs', label: 'FCFS', full: 'First-Come, First-Served',
+    { id: 'fcfs', slug: 'fcfs', label: 'FCFS', full: 'First-Come, First-Served',
       desc: 'Executa os processos na ordem de chegada, sem interrupções. Simples, mas pode fazer processos curtos esperarem atrás de processos longos.' },
-    { id: 'sjf', label: 'SJF', full: 'Shortest Job First (não preemptivo)',
+    { id: 'sjf', slug: 'sjf', label: 'SJF', full: 'Shortest Job First (não preemptivo)',
       desc: 'A cada escolha, roda o processo pronto com a menor duração total até o fim, sem interromper. Minimiza a espera média, mas pode postergar processos longos indefinidamente.' },
-    { id: 'srtf', label: 'SRTF', full: 'SJF Preemptivo (Shortest Remaining Time First)',
+    { id: 'srtf', slug: 'srtf', label: 'SRTF', full: 'SJF Preemptivo (Shortest Remaining Time First)',
       desc: 'Como o SJF, mas pode interromper o processo em execução se um recém-chegado tiver um tempo restante menor. Reage rápido a processos curtos, ao custo de mais trocas de contexto.' },
-    { id: 'rr', label: 'Round-Robin', full: 'Round-Robin',
+    { id: 'rr', slug: 'round-robin', label: 'Round-Robin', full: 'Round-Robin',
       desc: 'Cada processo roda por no máximo um quantum de tempo, depois volta para o fim da fila. Garante que todos avancem, mas processos longos levam mais tempo para terminar.' },
-    { id: 'prio_np', label: 'Prioridade', full: 'Prioridade (não preemptivo)',
+    { id: 'prio_np', slug: 'priority-np', label: 'Prioridade', full: 'Prioridade (não preemptivo)',
       desc: 'Executa o processo pronto de maior prioridade (número menor = mais prioritário) até o fim, sem interromper.' },
-    { id: 'prio_p', label: 'Prioridade Preemptiva', full: 'Prioridade (preemptiva)',
+    { id: 'prio_p', slug: 'priority-p', label: 'Prioridade Preemptiva', full: 'Prioridade (preemptiva)',
       desc: 'Como a prioridade não preemptiva, mas um processo em execução é interrompido assim que chega alguém com prioridade mais alta.' },
   ];
 

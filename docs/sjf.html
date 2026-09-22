@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SJF — Escalonador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/docs.css">
+</head>
+<body>
+<div class="app-shell">
+  <nav class="sidebar" id="sidebarMount"></nav>
+  <main class="docs-main">
+    <div class="docs-eyebrow">algoritmo de escalonamento · não preemptivo</div>
+    <h1>SJF — Shortest Job First</h1>
+    <p class="docs-sub">Entre os processos prontos, sempre escolhe o mais curto primeiro. Minimiza a espera média — ao custo de exigir que a duração seja conhecida de antemão.</p>
+
+    <h2>Como funciona</h2>
+    <p>
+      A cada momento em que a CPU fica livre, o escalonador olha todos os
+      processos que já chegaram e ainda não rodaram, e escolhe o que tem a
+      <strong>menor duração total</strong> (burst time). Uma vez escolhido,
+      o processo roda até terminar — não há preempção nessa versão do SJF.
+    </p>
+    <ol>
+      <li>Entre os processos já chegados e ainda não executados, encontre o de menor duração.</li>
+      <li>Execute-o do início ao fim.</li>
+      <li>Quando a CPU liberar, repita a escolha entre os que já chegaram até então.</li>
+    </ol>
+
+    <h2>Pseudocódigo</h2>
+    <div class="code-block">tempo = 0
+enquanto houver processo pendente:
+    disponiveis = processos com chegada <= tempo e ainda não executados
+    se disponiveis estiver vazio:
+        tempo = chegada do próximo processo pendente
+        continue
+    p = processo de menor duracao em disponiveis
+    inicio[p] = tempo
+    tempo = tempo + duracao[p]
+    fim[p]   = tempo</div>
+
+    <h2>Vantagens e desvantagens</h2>
+    <div class="pros-cons">
+      <div class="pc-card good">
+        <h3>vantagens</h3>
+        <ul>
+          <li>Ótimo comprovado: minimiza o tempo médio de espera entre algoritmos não-preemptivos, dado que a duração seja conhecida.</li>
+          <li>Bom throughput para cargas com muitos processos curtos.</li>
+        </ul>
+      </div>
+      <div class="pc-card bad">
+        <h3>desvantagens</h3>
+        <ul>
+          <li>Exige saber a duração <em>antes</em> de executar — na prática, precisa ser estimada.</li>
+          <li>Processos longos podem sofrer <strong>inanição</strong> se processos curtos continuarem chegando.</li>
+          <li>Sem preempção: um processo longo que já começou não pode ser interrompido por um curtinho que acabou de chegar (isso é o que o SRTF resolve).</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Fórmulas</h2>
+    <div class="formula">espera = (fim − chegada) − duração</div>
+    <div class="formula">retorno = fim − chegada</div>
+
+    <div class="docs-cta">
+      <a href="../index.html?algo=sjf">Testar SJF no simulador →</a>
+    </div>
+  </main>
+</div>
+<script src="../js/engine.js"></script>
+<script src="../js/sidebar.js"></script>
+<script>initSidebar('sidebarMount', { fromDocs: true, current: 'sjf' });</script>
+</body>
+</html>

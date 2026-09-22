@@ -8,9 +8,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/layout.css">
 </head>
 <body>
-<div class="wrap">
+<div class="app-shell">
+  <nav class="sidebar" id="sidebarMount"></nav>
+  <main class="wrap">
 
   <header class="top">
     <div class="brand">
@@ -76,8 +79,6 @@
       <h2>resultados finais</h2>
       <div class="metrics-grid" id="metricsGrid"></div>
     </div>
-  </div>
-
   </section>
 
   <section class="panel">
@@ -126,9 +127,12 @@
     Simulador educacional para a disciplina de Sistemas Operacionais.
   </footer>
 
+  </main>
 </div>
 
 <script src="js/engine.js"></script>
+<script src="js/sidebar.js"></script>
+<script>initSidebar('sidebarMount', { fromDocs: false, current: 'index' });</script>
 <script src="js/app.js"></script>
 </body>
 </html>

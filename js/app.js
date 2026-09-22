@@ -375,6 +375,12 @@
 
   // ---------- init ----------
 
+  // Doc pages link back here as index.html?algo=<id> — honor it if valid.
+  const requestedAlgo = new URLSearchParams(window.location.search).get('algo');
+  if (requestedAlgo && ALGOS.some(a => a.id === requestedAlgo)) {
+    algo = requestedAlgo;
+  }
+
   renderAlgoRow();
   renderProcessTable();
   recompute();
