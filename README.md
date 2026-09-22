@@ -93,7 +93,7 @@ seguida, ordem de inserção do processo — garantindo resultado determinístic
 
 Por decisão de projeto (ver `docs/prompt.md`, se incluído): gerência de
 memória, sistemas de arquivos, sincronização de processos/semáforos e
-multithreading não fazem parte deste simulador — o foco é exclusivamente
+multithreading não fazem parte deste simulador, o foco é exclusivamente
 visualizar o escalonamento de CPU.
 
 ## Extendendo
