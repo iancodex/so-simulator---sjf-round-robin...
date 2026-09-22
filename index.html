@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Escalonador — Simulador de Escalonamento de CPU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <span class="mark">CPU</span>
+      <h1>Escalonador</h1>
+    </div>
+    <p class="tagline">Veja como cada algoritmo decide quem usa o processador — e por quanto tempo.</p>
+  </header>
+
+  <section class="panel" id="algoPanel">
+    <h2>algoritmo</h2>
+    <div class="algo-row" id="algoRow"></div>
+    <p class="algo-desc" id="algoDesc"></p>
+    <div class="quantum-row" id="quantumRow" style="display:none;">
+      <label for="quantumInput">Quantum</label>
+      <input type="number" id="quantumInput" min="1" value="2">
+      <span style="color:var(--text-muted); font-size:12.5px;">unidades de tempo por fatia</span>
+    </div>
+  </section>
+
+  <section class="two-col">
+    <div class="panel">
+      <h2>processos</h2>
+      <table class="ptable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Chegada</th>
+            <th>Duração</th>
+            <th id="prioHeader">Prioridade</th>
+            <th>Tipo</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="ptableBody"></tbody>
+      </table>
+
+      <div class="add-row">
+        <div class="field">
+          <label for="inArrival">Chegada</label>
+          <input type="number" id="inArrival" min="0" value="0">
+        </div>
+        <div class="field">
+          <label for="inBurst">Duração</label>
+          <input type="number" id="inBurst" min="1" value="4">
+        </div>
+        <div class="field">
+          <label for="inPriority">Prioridade</label>
+          <input type="number" id="inPriority" min="1" value="3">
+        </div>
+        <div class="field">
+          <label for="inType">Tipo</label>
+          <select id="inType">
+            <option value="cpu">CPU-bound</option>
+            <option value="io">I/O-bound</option>
+          </select>
+        </div>
+        <button class="add-btn" id="addBtn">Adicionar processo</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>resultados finais</h2>
+      <div class="metrics-grid" id="metricsGrid"></div>
+    </div>
+  </div>
+
+  </section>
+
+  <section class="panel">
+    <h2>simulação</h2>
+    <div class="playback-bar">
+      <div class="transport">
+        <button id="playBtn" class="primary">▶ Executar</button>
+        <button id="stepBtn">Passo</button>
+        <button id="resetBtn">Reiniciar</button>
+      </div>
+      <div class="speed-field">
+        <label for="speedInput">Velocidade</label>
+        <input type="range" id="speedInput" min="0.5" max="6" step="0.5" value="2">
+        <span id="speedLabel">2×</span>
+      </div>
+      <div class="clock">t = <b id="clockVal">0</b></div>
+    </div>
+
+    <div class="gantt-scroll">
+      <div class="gantt-track" id="ganttTrack"></div>
+      <div class="axis" id="ganttAxis"></div>
+    </div>
+    <p class="scroll-x-hint">Arraste para o lado para ver a linha do tempo completa.</p>
+
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <section class="panel">
+    <h2>estado dos processos</h2>
+    <table class="ptable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Status</th>
+          <th>Restante</th>
+          <th>Espera</th>
+          <th>Retorno</th>
+        </tr>
+      </thead>
+      <tbody id="statusBody"></tbody>
+    </table>
+  </section>
+
+  <footer class="note">
+    FCFS · SJF (não preemptivo) · SRTF (SJF preemptivo) · Round-Robin · Prioridade (não preemptivo e preemptivo)<br>
+    Simulador educacional para a disciplina de Sistemas Operacionais.
+  </footer>
+
+</div>
+
+<script src="js/engine.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
